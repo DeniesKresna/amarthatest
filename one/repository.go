@@ -43,7 +43,8 @@ func (r *repo) GetPaidRepaymentTotal(c *gin.Context, repayment models.Repayment)
 	var totalPayment sql.NullFloat64
 	err = r.db.Model(&models.Repayment{}).
 		Select("SUM(pay_amount)").
-		Where(repayment).
+		Where("pay_code = ?", repayment.PayCode).
+		Where("paid_at is not null").
 		Scan(&totalPayment).Error
 	if err != nil {
 		return

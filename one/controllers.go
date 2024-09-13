@@ -211,7 +211,7 @@ func (k *controller) GeneratePaymentInvoice(c *gin.Context) {
 		}
 
 		// inject for updating outstanding later
-		outstanding = float64(loan.Amount) - totalPaidPayments
+		outstanding = float64(loan.Outstanding) - totalPaidPayments
 		loan.Outstanding = outstanding
 
 		// if outstanding is 0 or lower, means that this loan has been paid off
@@ -373,14 +373,10 @@ func (k *controller) PayLoanInstallment(c *gin.Context) {
 	// set outstanding and paidoff status of loan
 	var outstanding float64
 	{
-		totalPaidPayments, err := k.repo.GetPaidRepaymentTotal(c, repayment)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
+		installment := getInstalmentFromLoanAmount(float64(loan.Amount))
 
 		// inject for updating outstanding later
-		outstanding = float64(loan.Amount) - totalPaidPayments
+		outstanding = float64(loan.Outstanding) - installment
 		loan.Outstanding = outstanding
 
 		// if outstanding is 0 or lower, means that this loan has been paid off
