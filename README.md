@@ -21,7 +21,7 @@
    
    I was using golang as required by the test, and using GIN as web framework since GIN has gain the most stars as go web framework in github and based on its performance as the fastest go webframework.
    I was using MySql v8 for the database
-   I was not using clean architecture since this only for doing small part of big service
+   I did not use clean architecture since this only for doing small part of big service. this implement simple structure, (controller-repo)
    I was using cron as well
 
 5. Disclaimer
