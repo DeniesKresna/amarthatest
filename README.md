@@ -12,6 +12,7 @@
 3. How to run
    - install go.
    - git clone https://github.com/DeniesKresna/amarthatest.git
+   - run go mod tidy
    - run docker compose up -d for starting the database
    - run go run main.go to start develop and testing
      
