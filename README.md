@@ -1,7 +1,7 @@
 1. Purpose:
    
    This Backend API purposed to fulfill amartha backend test held in September 2024
-   i was choosing task NUMBER ONE since it was core part of loan system. But if you need later, i can do another question as well.
+   i was choosing task NUMBER ONE since it was core part of loan system. But if you need later, i can work on another task number as well.
 2. Documentation
    
    - Api Documentation was served by postman server in [https://documenter.getpostman.com/view/3715067/2sAXjF6tr4](https://documenter.getpostman.com/view/3715067/2sAXqnePxJ)
