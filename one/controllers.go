@@ -201,21 +201,6 @@ func (k *controller) GeneratePaymentInvoice(c *gin.Context) {
 		}
 	}
 
-	// update loan and profile
-	{
-		err = k.repo.UpdateLoan(c, &loan)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		err = k.repo.UpdateProfile(c, &profile)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-	}
-
 	// set outstanding and paidoff status of loan
 	var outstanding float64
 	{
@@ -239,6 +224,21 @@ func (k *controller) GeneratePaymentInvoice(c *gin.Context) {
 		if isLoanPaidOff {
 
 			c.JSON(http.StatusBadRequest, gin.H{"error": "this loan has been paid off"})
+			return
+		}
+	}
+
+	// update loan and profile
+	{
+		err = k.repo.UpdateLoan(c, &loan)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		err = k.repo.UpdateProfile(c, &profile)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 	}
