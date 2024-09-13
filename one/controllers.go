@@ -221,21 +221,21 @@ func (k *controller) GeneratePaymentInvoice(c *gin.Context) {
 		}
 		loan.IsPaidOff = &isLoanPaidOff
 
-		if isLoanPaidOff {
-
-			c.JSON(http.StatusBadRequest, gin.H{"error": "this loan has been paid off"})
-			return
-		}
-	}
-
-	// update loan and profile
-	{
+		// update loan
 		err = k.repo.UpdateLoan(c, &loan)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
+		if isLoanPaidOff {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "this loan has been paid off"})
+			return
+		}
+	}
+
+	// update profile
+	{
 		err = k.repo.UpdateProfile(c, &profile)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
