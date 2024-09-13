@@ -370,6 +370,34 @@ func (k *controller) PayLoanInstallment(c *gin.Context) {
 		return
 	}
 
+	// set outstanding and paidoff status of loan
+	var outstanding float64
+	{
+		totalPaidPayments, err := k.repo.GetPaidRepaymentTotal(c, repayment)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		// inject for updating outstanding later
+		outstanding = float64(loan.Amount) - totalPaidPayments
+		loan.Outstanding = outstanding
+
+		// if outstanding is 0 or lower, means that this loan has been paid off
+		isLoanPaidOff := false
+		if outstanding <= 0 {
+			isLoanPaidOff = true
+		}
+		loan.IsPaidOff = &isLoanPaidOff
+
+		// update loan
+		err = k.repo.UpdateLoan(c, &loan)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
 	// check wheter user is delinquent
 	{
 		// get creation date of last paid repayment
@@ -409,14 +437,8 @@ func (k *controller) PayLoanInstallment(c *gin.Context) {
 		}
 	}
 
-	// update loan and profile
+	// update profile
 	{
-		err = k.repo.UpdateLoan(c, &loan)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
 		err = k.repo.UpdateProfile(c, &profile)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
