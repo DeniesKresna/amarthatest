@@ -31,5 +31,5 @@ func InitQuestion(r *gin.Engine, conf *config.Config) {
 	// pay user repayment invoices
 	r.POST("/repayment/pay", handler.PayLoanInstallment)
 
-	InitCron(handler)
+	go InitCron(handler)
 }

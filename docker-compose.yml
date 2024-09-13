@@ -1,19 +1,14 @@
 version: '3.8'
 
 services:
-  # backend:
-  #   container_name: batumbutest_app
-  #   build: ./
-  #   restart: on-failure
-  #   ports:
-  #     - "8321:8321"
-  #   env_file:
-  #     - ./.env
-  #   volumes:
-  #     - ./config:/app/config
-  #   depends_on:
-  #     # - traefik
-  #     - database
+  backend:
+    container_name: amarthatest_app
+    build: ./
+    restart: on-failure
+    ports:
+      - "8898:8898"
+    depends_on:
+      - database
 
   database:
     platform: linux/x86_64
